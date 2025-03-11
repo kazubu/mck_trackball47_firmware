@@ -12,9 +12,10 @@ enum charybdis_keymap_layers {
     LAYER_BASE = 0,
     LAYER_LOWER,
     LAYER_RAISE,
-    LAYER_POINTER,
+    LAYER_ADJUST,
     LAYER_END,
     LAYER_MOUSE,
+    LAYER_POINTER
 };
 
 
@@ -115,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //    ╰──────────────────╯
    ),
 
-  [LAYER_POINTER] = LAYOUT(
+  [LAYER_ADJUST] = LAYOUT(
 
   //  // ╭──────────╭────────────────────────────────────────────────                 ╭──────────────────────────────────────────────────────╮ // ╭──────────
             KC_ESC,    KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,                            KC_6,    KC_7,       KC_8,    KC_9,    KC_0,       KC_ESC,
@@ -154,6 +155,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╰──────────────────────────────────────────────────────┤               ├──────────────────────────────────────────────────────╯
   //    ╰──────────────────╯
 ),
+[LAYER_POINTER] = LAYOUT(
+  // ───────────╭────────────────────────────────────────────────                 ╭────────────────────────────────────────────────────────────────╮
+       KC_ESC,     KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_ESC,
+  // ───────────├────────────────────────────────────────────────                 ├─────────────────────────────────────────────────────────
+       KC_TAB,     KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_TAB,
+  // ───────────├────────────────────────────────────────────────                 ├─────────────────────────────────────────────────────────
+      KC_LSFT,    KC_LSFT,    KC_A,    KC_S,    KC_D,    KC_F,                         KC_H,    KC_J,    KC_K,    KC_L,   KC_SCLN, KC_LSFT,
+  // ───────────├──────────────────────────────────────────────────────┤               ├────────────────────────────────────────────┤───────────
+      KC_LCTL,    KC_LCTL,    PT_Z,    KC_X,    KC_C,    KC_V,    KC_B,      KC_COMM,  KC_N,                              KC_COMM,KC_LSFT
+  // ╰──────────────────────────────────────────────────────┤               ├──────────────────────────────────────────────────────╯
+  //    ╰──────────────────╯
+),
+
 };
 
 #ifdef POINTING_DEVICE_ENABLE
@@ -231,7 +245,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         case AUTO_THRESHOLD:
             if(record->event.pressed) { // key down
                 user_config.threshold_value +=  1;
-//                eeconfig_update_user(user_config.raw1);
             }
             return false; // prevent further processing of keycode
         case TInfo:
@@ -621,14 +634,17 @@ static void slave_data(void) {
         case LAYER_RAISE:
             oled_write("  2  ", false);
             break;
-        case LAYER_POINTER:
-            oled_write("3", false);
+        case LAYER_ADJUST:
+            oled_write("  3  ", false);
             break;
         case LAYER_END:
             oled_write("  4  ", false);
             break;
         case LAYER_MOUSE:
             oled_write("Mouse", false);
+            break;
+        case LAYER_POINTER:
+            oled_write("Point", false);
             break;
         default:
             oled_write("Undef", false);
