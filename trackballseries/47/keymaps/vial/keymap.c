@@ -295,7 +295,7 @@ void render_space(void) {
 void render_logo(void) {
         oled_write_P(PSTR("Track"), false);
         oled_write_P(PSTR("ball "), false);
-        oled_write_P(PSTR("47   "), false);
+        oled_write_P(PSTR("47kai"), false);
 
 }
 
